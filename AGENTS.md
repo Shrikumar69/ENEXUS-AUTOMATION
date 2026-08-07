@@ -13,9 +13,9 @@ This file helps AI coding agents work safely and quickly in this Playwright test
 - Run all tests: `npm test`
 - Run headed: `npm run test:headed`
 - Run UI mode: `npm run test:ui`
-- Preferred single-spec command: `npx playwright test tests/eNexus-Login/login.spec.ts`
+- Preferred single-spec command: `npx playwright test src/tests/eNexus-Login/login.spec.ts`
 
-Note: `npm run test:login` in [package.json](package.json) currently points to `tests/auth/login.spec.ts`, which does not exist in this repo layout.
+`npm run test:login` runs the login spec.
 
 ## Environment Setup
 
@@ -28,9 +28,9 @@ Note: `npm run test:login` in [package.json](package.json) currently points to `
 
 ## Core Structure
 
-- Page objects: [pages/login.page.ts](pages/login.page.ts)
+- Page objects: [src/pages/login.page.ts](src/pages/login.page.ts)
 - Auth fixture: [fixtures/session.fixture.ts](fixtures/session.fixture.ts)
-- Login tests: [tests/eNexus-Login/login.spec.ts](tests/eNexus-Login/login.spec.ts)
+- Login tests: [src/tests/eNexus-Login/login.spec.ts](src/tests/eNexus-Login/login.spec.ts)
 - Env helpers: [utils/env.ts](utils/env.ts)
 - Playwright config: [playwright.config.ts](playwright.config.ts)
 - CI workflow: [.github/workflows/playwright.yml](.github/workflows/playwright.yml)
@@ -38,13 +38,13 @@ Note: `npm run test:login` in [package.json](package.json) currently points to `
 ## Non-Negotiable Conventions
 
 - For authenticated tests, import `test` and `expect` from [fixtures/session.fixture.ts](fixtures/session.fixture.ts), not from `@playwright/test`.
-- Keep selector fallback strategy in page objects (see [pages/login.page.ts](pages/login.page.ts)); avoid replacing resilient multi-selector locators with a single fragile selector.
+- Keep selector fallback strategy in page objects (see [src/pages/login.page.ts](src/pages/login.page.ts)); avoid replacing resilient multi-selector locators with a single fragile selector.
 - Keep tests small and assertion-focused; put navigation/login mechanics in fixtures and page objects.
 - Prefer explicit waits/assertions used in current code style (`toBeVisible`, `toHaveURL`, `toHaveTitle`) with bounded timeouts.
 
 ## Playwright Behavior in This Repo
 
-- `testDir` is `./tests`.
+- `testDir` is `./src/tests`.
 - Only Chromium project is enabled currently.
 - Retries/workers are CI-aware in [playwright.config.ts](playwright.config.ts).
 - `baseURL` is not configured; use full URLs via helpers.
@@ -52,7 +52,7 @@ Note: `npm run test:login` in [package.json](package.json) currently points to `
 ## Safe Change Patterns
 
 - Add or update locators in page objects first, then consume from tests.
-- If adding a new authenticated spec, follow import/style from [tests/eNexus-Login/login.spec.ts](tests/eNexus-Login/login.spec.ts).
+- If adding a new authenticated spec, follow import/style from [src/tests/eNexus-Login/login.spec.ts](src/tests/eNexus-Login/login.spec.ts).
 - If adding env-driven behavior, centralize it in [utils/env.ts](utils/env.ts).
 
 ## Validation Before Hand-off

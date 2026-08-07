@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/session.fixture';
+import { test, expect } from '../../../fixtures/session.fixture';
 
 test.describe('ENexus Login', () => {
   test('user can login with valid credentials', async ({ authenticatedPage }) => {
