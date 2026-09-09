@@ -8,11 +8,21 @@ import path from 'path';
  */
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+const stepDelayMs = Number(process.env.PW_SLOWMO_MS ?? 500);
+const testTimeoutMs = parseEnvNumber(process.env.PW_TEST_TIMEOUT_MS) ?? 120000;
+const expectTimeoutMs = parseEnvNumber(process.env.PW_EXPECT_TIMEOUT_MS) ?? 20000;
+const actionTimeoutMs = parseEnvNumber(process.env.PW_ACTION_TIMEOUT_MS) ?? 20000;
+const navigationTimeoutMs = parseEnvNumber(process.env.PW_NAVIGATION_TIMEOUT_MS) ?? 90000;
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
   testDir: './src/tests',
+  timeout: testTimeoutMs,
+  expect: {
+    timeout: expectTimeoutMs,
+  },
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -27,6 +37,14 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
+
+    /* External QA endpoints can be slow and may present cert issues in automated browsers. */
+    navigationTimeout: navigationTimeoutMs,
+    actionTimeout: actionTimeoutMs,
+    ignoreHTTPSErrors: true,
+    launchOptions: {
+      slowMo: Number.isFinite(stepDelayMs) ? stepDelayMs : 500,
+    },
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -67,3 +85,12 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
+
+function parseEnvNumber(value: string | undefined): number | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+}
