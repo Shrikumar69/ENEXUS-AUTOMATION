@@ -47,9 +47,15 @@ export class LoginPage {
   }
 
   async goto(url: string): Promise<void> {
-    await this.page.goto(url, { waitUntil: 'domcontentloaded' });
-    await expect(this.usernameInput).toBeVisible({ timeout: 30000 });
-    await expect(this.passwordInput).toBeVisible({ timeout: 30000 });
+    try {
+      await this.page.goto(url, { waitUntil: 'domcontentloaded' });
+    } catch {
+      // Some environments delay full DOM readiness; proceed once main document is committed.
+      await this.page.goto(url, { waitUntil: 'commit' });
+      await this.page.waitForLoadState('domcontentloaded').catch(() => undefined);
+    }
+    await expect(this.usernameInput).toBeVisible();
+    await expect(this.passwordInput).toBeVisible();
   }
 
   async login(username: string, password: string): Promise<void> {
@@ -59,12 +65,9 @@ export class LoginPage {
   }
 
   async expectLoginSuccess(): Promise<void> {
-    await this.page.waitForURL((url) => !url.href.includes('/login'), {
-      timeout: 30000,
-    });
+    await this.page.waitForURL((url) => !url.href.includes('/login'));
     await expect(this.page).not.toHaveURL(/\/login/i);
-    await expect(this.page).toHaveTitle('ENexus', {
-      timeout: 30000,
-    });
+    await expect(this.page.getByRole('heading', { name: /EPICOR\s*-\s*eNexus/i })).toBeVisible();
+    await expect(this.page.locator('#Menu').first()).toBeVisible();
   }
 }

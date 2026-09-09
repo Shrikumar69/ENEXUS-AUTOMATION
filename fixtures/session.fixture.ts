@@ -61,6 +61,6 @@ async function logout(page: Page): Promise<void> {
 
   if (await logoutAction.isVisible().catch(() => false)) {
     await logoutAction.click();
-    await page.waitForURL(/\/login/i, { timeout: 15000 }).catch(() => undefined);
+    await page.waitForURL(/\/login/i).catch(() => undefined);
   }
 }
