@@ -1,5 +1,5 @@
 import { test as base, expect, type Page } from '@playwright/test';
-import { LoginPage } from '../src/pages/login.page';
+import { LoginPage } from '../src/pages/login/login.page';
 import { getLoginCredentials, getLoginUrl } from '../utils/env';
 
 type SessionFixtures = {

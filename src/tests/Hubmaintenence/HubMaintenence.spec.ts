@@ -1,7 +1,7 @@
-import { test, expect } from '../../fixtures/session.fixture';
-import { MenuFixture } from '../../fixtures/menu.fixture';
-import { HubMaintenencePage } from '../pages/HubMaintenence.page';
-import { waitForGlobalStep } from '../../utils/wait';
+import { test, expect } from '../../../fixtures/session.fixture';
+import { MenuFixture } from '../../../fixtures/menu.fixture';
+import { HubMaintenencePage } from '../../pages/Hubmaintenence/HubMaintenence.page';
+import { waitForGlobalStep } from '../../../utils/wait';
 
 test.describe('Hub Maintenance', () => {
   test('user can create hub with required fields and save', async ({ authenticatedPage }) => {
