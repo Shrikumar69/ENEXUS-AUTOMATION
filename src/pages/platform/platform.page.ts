@@ -30,8 +30,13 @@ export class PlatformPage {
 		this.platformActiveCheckbox = page.locator('#platformActive input[type="checkbox"]').first();
 	}
 
-	async Createplatform(): Promise<void> {
+	async clickAddNewPlatform(): Promise<void> {
+		await expect(this.addNewPlatformButton).toBeVisible();
 		await this.addNewPlatformButton.click();
+	}
+
+	async Createplatform(): Promise<void> {
+		await this.clickAddNewPlatform();
 	}
 
 	async expectCreateNewPlatformLoaded(): Promise<void> {

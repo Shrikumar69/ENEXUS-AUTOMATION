@@ -18,7 +18,7 @@ test.describe('Platform Maintenance', () => {
 		await waitForGlobalStep(authenticatedPage);
 
 		const platformPage = new PlatformPage(authenticatedPage);
-		await platformPage.Createplatform();
+		await platformPage.clickAddNewPlatform();
 		await waitForGlobalStep(authenticatedPage);
 
 		await platformPage.expectCreateNewPlatformLoaded();
